@@ -22,14 +22,14 @@ async function connect() {
       _updateResponse("Connected");
       return r;
     });
+    ws.addListener(_updateResponse);
   } catch (e) {
     _updateResponse(e);
   }
-  ws.addListener(_updateResponse);
 }
 
 function send() {
-  ws.send(document.querySelector("#msg-input")?.textContent || "")
+  ws.send((<HTMLInputElement>document.getElementById("msg-input"))?.value || "")
     .then(() => _updateResponse("Message sent"))
     .catch(_updateResponse);
 }
@@ -42,7 +42,7 @@ function disconnect() {
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
-    <input type="text" />
+    <input type="text" id="msg-input" />
     <button id="send">send</button>
     <button id="disconnect">disconnect</button>
     <div id="response-container"></div>
